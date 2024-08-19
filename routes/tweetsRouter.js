@@ -1,4 +1,5 @@
 const express = require("express");
+const boom = require("@hapi/boom");
 const tweetsService = require("../services/tweetsService.js");
 
 const validation = require("../utils/middlewares/createValidationMiddleware");
@@ -37,17 +38,17 @@ async function createTweet(req, res, next) {
     }
 }
 
-async function getTweet(req, res) {
+async function getTweet(req, res, next) {
     try {
         const { tweetId } = req.params;
         const tweet = await tweetsService.getTweet(tweetId);
         res.status(200).json(tweet);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }
 
-async function deleteTweet(req, res) {
+async function deleteTweet(req, res, next) {
     try {
         const { tweetId } = req.params;
         const deletedRows = await tweetsService.deleteTweet(tweetId);
@@ -57,11 +58,11 @@ async function deleteTweet(req, res) {
             res.status(404).json({ error: "Tweet not found" });
         }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }
 
-async function updateTweet(req, res) {
+async function updateTweet(req, res, next) {
     try {
         const { tweetId } = req.params;
         const { content } = req.body;
@@ -70,9 +71,11 @@ async function updateTweet(req, res) {
         if (updatedRows > 0) {
             res.status(200).json({ message: "Tweet updated" });
         } else {
-            res.status(404).json({ message: "Tweet not found" });
+            const { output: { statusCode, payload } } = boom.notFound();  // Corrigido: `payload`
+            payload.message = "Tweet not found";  // Corrigido: `payload.message`
+            res.status(statusCode).json(payload);
         }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }

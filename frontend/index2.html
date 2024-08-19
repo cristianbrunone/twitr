@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Clone</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Barra Lateral -->
+            <div class="col-3 sidebar">
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-house-door"></i> Home</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-search"></i> Explore</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-bell"></i> Notifications</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-envelope"></i> Messages</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-bookmark"></i> Grok</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-bookmark"></i> Bookmarks</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-people"></i> Communities</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-x-circle"></i> Premium</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-lightning-charge"></i> Verified Orgs</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-person"></i> Profile</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="bi bi-three-dots"></i> More</a>
+                </div>
+                <button class="btn btn-primary mt-3">Post</button>
+                <div class="sidebar-item mt-3">
+                    <img src="https://picsum.photos/50/50" alt="Profile Picture" class="rounded-circle">
+                    <div class="sidebar-text">
+                        Cristian Brunone
+                        <a href="#" class="sidebar-link">@BrunoneCristian</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="col-6 main-content">
+                <!-- Crear Tweet -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">What is happening?!</h5>
+                        <textarea class="form-control mb-2" rows="3" placeholder="Escribe tu tweet aquí..."></textarea>
+                        <button class="btn btn-primary">Post</button>
+                    </div>
+                </div>
+
+                <!-- Tweets -->
+                <div id="tweets-container">
+                    <!-- Tweet Ejemplo -->
+                    <div class="card tweet-card">
+                        <div class="card-body">
+                            <div class="tweet-header">Elon Musk <i class="bi bi-check-circle-fill"></i> <a href="#" class="card-link">@elonmusk</a> · 20h</div>
+                            <div class="tweet-body">
+                                Exactly
+                            </div>
+                            <div class="tweet-actions">
+                                <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editTweetModal">Edit</button>
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Más tweets aquí -->
+                </div>
+            </div>
+
+            <!-- Barra Lateral Derecha -->
+            <div class="col-3 right-sidebar">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Subscribe to Premium</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Subscribe to unlock new features and if eligible, receive a share of ads revenue.</p>
+                        <button class="btn btn-primary">Subscribe</button>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="card-title">Live on X</h5>
+                    </div>
+                    <div class="card-body">
+                        <img src="https://picsum.photos/50/50" alt="Profile Picture" class="rounded-circle">
+                        <div class="card-text">
+                            Marco Bruno <i class="bi bi-flag-fill"></i> <i class="bi bi-check-circle-fill"></i>
+                            <span class="card-text">is hosting</span>
+                        </div>
+                        <p class="card-text">Criando game Multiplayer com JavaScript #MyDuckly</p>
+                        <img src="https://picsum.photos/50/50" alt="Profile Picture" class="rounded-circle" style="position: absolute; top: 10px; right: 10px;">
+                        <span class="badge bg-secondary" style="position: absolute; top: 10px; right: 20px;">+190</span>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="card-title">What's happening</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Politics · Trending</h6>
+                        <h5 class="card-title">Alexandre de Moraes</h5>
+                        <p class="card-text">Trending with <a href="#" class="card-link">Interpol</a>, <a href="#" class="card-link">Allan dos Santos</a></p>
+                        <i class="bi bi-three-dots"></i>
+                        <h6 class="card-subtitle mb-2 text-muted mt-3">Trending in Brazil</h6>
+                        <h5 class="card-title">O CNU</h5>
+                        <p class="card-text">15.2K posts</p>
+                        <i class="bi bi-three-dots"></i>
+                        <h6 class="card-subtitle mb-2 text-muted mt-3">Entertainment · Trending</h6>
+                        <h5 class="card-title">Silvio Santos</h5>
+                        <p class="card-text">675K posts</p>
+                        <i class="bi bi-three-dots"></i>
+                        <h6 class="card-subtitle mb-2 text-muted mt-3">Only on X · Trending</h6>
+                        <h5 class="card-title">#ปิ่นภักดิ์FP3</h5>
+                        <i class="bi bi-three-dots"></i>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="card-title">Messages</h5>
+                    </div>
+                    <div class="card-body">
+                        <i class="bi bi-chat-left-text"></i>
+                        <i class="bi bi-arrow-up-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición -->
+    <div class="modal fade" id="editTweetModal" tabindex="-1" aria-labelledby="editTweetModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTweetModalLabel">Edit Tweet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control" rows="3">Texto del tweet aquí...</textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

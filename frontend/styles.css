@@ -1,0 +1,138 @@
+/* Estilos Globais */
+body {
+    background-color: #f5f8fa;
+    color: #14171a;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Barra Lateral */
+.sidebar {
+    background-color: #ffffff;
+    color: #14171a;
+    padding: 20px;
+    height: 100vh;
+    border-right: 1px solid #e1e8ed;
+}
+
+.sidebar-item {
+    margin-bottom: 20px;
+}
+
+.sidebar-link {
+    color: #1da1f2;
+    text-decoration: none;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-link i {
+    margin-right: 10px;
+}
+
+.sidebar-link:hover {
+    color: #0d95e8;
+}
+
+.sidebar-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Conteúdo Principal */
+.main-content {
+    background-color: #ffffff;
+    color: #14171a;
+    padding: 20px;
+    margin-top: 60px; /* Ajustar para não sobrepor o cabeçalho */
+    border-left: 1px solid #e1e8ed;
+}
+
+/* Estilos da Seção de Criação de Tweet */
+.tweet-card {
+    background-color: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 16px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tweet-card textarea {
+    border: none;
+    font-size: 1rem;
+    resize: none;
+    outline: none;
+    margin-top: 10px;
+}
+
+.tweet-card textarea::placeholder {
+    color: #657786;
+}
+
+.tweet-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.tweet-card .btn-primary {
+    background-color: #1da1f2;
+    border-color: #1da1f2;
+    border-radius: 30px;
+    padding: 5px 20px;
+}
+
+.tweet-card .btn-primary:hover {
+    background-color: #0d95e8;
+}
+
+.tweet-card i {
+    font-size: 1.2rem;
+    color: #1da1f2;
+    cursor: pointer;
+}
+
+.tweet-card i:hover {
+    color: #0d95e8;
+}
+
+/* Estilo para cada tweet */
+.tweet {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.tweet:hover {
+    transform: translateY(-2px);
+}
+
+/* Ajuste de la barra lateral y el contenido */
+.sidebar-link {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.sidebar-item {
+    margin-bottom: 15px;
+}
+
+.card-title {
+    color: #14171a;
+}
+
+/* Barra Lateral Direita */
+.right-sidebar {
+    background-color: #ffffff;
+    color: #14171a;
+    padding: 20px;
+    height: 100vh;
+    border-left: 1px solid #e1e8ed;
+}
