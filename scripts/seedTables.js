@@ -2,10 +2,10 @@ const connection = require("../lib/connect.js");
 
 // Crear tabla users
 const createUsersTable = `
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     userID INT AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     passwordHash VARCHAR(255) NOT NULL,
     creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -17,56 +17,70 @@ CREATE TABLE users (
 
 // Crear tabla tweets
 const createTweetsTable = `
-CREATE TABLE tweets (
+CREATE TABLE IF NOT EXISTS tweets (
     tweetId INT AUTO_INCREMENT,
     userId INT,
     content VARCHAR(280),
     creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (tweetId),
-    FOREIGN KEY (userId) REFERENCES users(userID)
+    FOREIGN KEY (userId) REFERENCES users(userID) ON DELETE CASCADE
 );
 `;
 
 // Insertar usuarios
 const insertUsers = `
-INSERT INTO users (username, email, passwordHash, bio, location)
+INSERT IGNORE INTO users (username, email, passwordHash, bio, location)
 VALUES
 ('Cristian', 'cristianbrunonecmbc@gmail.com', 'hashedPassword1', 'I love coding', 'New York'),
 ('Junior', 'junior@example.com', 'hashedPassword2', 'Enjoys hiking', 'San Francisco');
 `;
 
+// Manejo de errores
 const printError = (msg) => (error) => {
-    error && console.log(msg, error)
+    if (error) {
+        console.error(msg, error);
+    }
 };
 
-connection.connect(error => {
-    error && console.log("Errro connecting to database", error);
-
-    connection.query(createUsersTable)
-
-})
-
-// Ejecutar las consultas
-connection.query(createUsersTable, (err, results) => {
-    if (err) {
-        console.error('Error creating users table:', err);
+// Conectar a la base de datos
+connection.connect((error) => {
+    if (error) {
+        console.error("Error connecting to the database:", error);
         return;
     }
-    console.log('Users table created successfully');
-});
 
-connection.query(createTweetsTable, (err, results) => {
-    if (err) {
-        console.error('Error creating tweets table:', err);
-        return;
-    }
-    console.log('Tweets table created successfully');
-});
+    // Crear tablas
+    connection.query(createUsersTable, (err, results) => {
+        if (err) {
+            console.error('Error creating users table:', err);
+            return;
+        }
+        console.log('Users table created successfully');
+    });
 
-connection.query(insertUsers, (err, results) => {
-    if (err) {
-        console.error('Error inserting users:', err);
-        return;
-    }
-    console.log('Users inserted successfully');
+    connection.query(createTweetsTable, (err, results) => {
+        if (err) {
+            console.error('Error creating tweets table:', err);
+            return;
+        }
+        console.log('Tweets table created successfully');
+    });
+
+    // Insertar datos
+    connection.query(insertUsers, (err, results) => {
+        if (err) {
+            console.error('Error inserting users:', err);
+            return;
+        }
+        console.log('Users inserted successfully');
+    });
+
+    // Cerrar la conexión
+    connection.end((err) => {
+        if (err) {
+            console.error('Error closing the connection:', err);
+        } else {
+            console.log('Connection closed successfully');
+        }
+    });
 });
