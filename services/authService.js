@@ -1,6 +1,8 @@
 const authRepository = require("../repositories/authRepository");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const boom = require('@hapi/boom');
+
 
 module.exports = {
     registerUser,
@@ -14,7 +16,7 @@ async function registerUser(userData) {
     // Verifica si el usuario ya existe por su email
     const existingUser = await authRepository.getUserByEmail(email);
     if (existingUser) {
-        throw new Error('El correo electrónico ya está registrado.');
+        throw boom.badRequest('El correo electrónico ya está registrado.');
     }
 
     // Hash de la contraseña
@@ -24,24 +26,7 @@ async function registerUser(userData) {
     return await authRepository.createUser({ username, email, passwordHash });
 }
 
-async function loginUser(email, password) {
-    // Busca el usuario por su email
-    const user = await authRepository.getUserByEmail(email);
-    if (!user) {
-        throw new Error('Correo electrónico o contraseña incorrectos.');
-    }
 
-    // Compara la contraseña
-    const isMatch = await bcrypt.compare(password, user.passwordHash);
-    if (!isMatch) {
-        throw new Error('Correo electrónico o contraseña incorrectos.');
-    }
-
-    // Genera el token JWT
-    const token = jwt.sign({ userId: user.userID, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    return { token, user };
-}
 
 async function getUserById(userId) {
     return await authRepository.getUserById(userId);

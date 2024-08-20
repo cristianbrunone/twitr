@@ -15,7 +15,7 @@ function logErrors(err, req, res, next) {
 }
 
 function wrapErrors(err, req, res, next) {
-    if(!err.isBoom) {
+    if (!err.isBoom) {
         next(boom.badImplementation(err));
     }
 
@@ -25,8 +25,9 @@ function wrapErrors(err, req, res, next) {
 function errorHandler(err, req, res, next) {
     const { stack, output } = err;
     res.status(output.statusCode);
-    res.json(withErrorStack(output.payLoad, err.stack));
+    res.json(withErrorStack(output.payload, err.stack));
 }
+
 
 module.exports = {
     logErrors,
