@@ -1,18 +1,19 @@
 const express = require("express");
 const boom = require("@hapi/boom");
 const tweetsService = require("../services/tweetsService.js");
-
+const authenticationToken = require("../utils/middlewares/authMiddleware");
 const validation = require("../utils/middlewares/createValidationMiddleware");
 const { createTweetSchema, tweetIdSchema, updateTweetSchema } = require("../utils/schemas/tweetSchema");
 
 const router = express.Router();
 
-router.get("/", getTweets);
-router.post("/", validation({ body: createTweetSchema }), createTweet);
-router.get("/:tweetId", validation({ params: tweetIdSchema }), getTweet);
-router.delete("/:tweetId", validation({ params: tweetIdSchema }), deleteTweet);
+router.get("/", authenticationToken, getTweets);
+router.post("/", authenticationToken, validation({ body: createTweetSchema }), createTweet);
+router.get("/:tweetId", authenticationToken, validation({ params: tweetIdSchema }), getTweet);
+router.delete("/:tweetId", authenticationToken, validation({ params: tweetIdSchema }), deleteTweet);
 router.patch(
     "/:tweetId",
+    authenticationToken,
     validation({ params: tweetIdSchema }),
     validation({ body: updateTweetSchema }),
     updateTweet

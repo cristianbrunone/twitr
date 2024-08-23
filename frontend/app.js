@@ -1,8 +1,16 @@
 const apiUrl = "http://localhost:3000/tweets"; // Ajusta o porto se necessário
 
+// Obtén el userId del localStorage
+const userId = localStorage.getItem('userId');
+
 async function fetchTweets() {
     try {
-        const response = await fetch(apiUrl);
+        if (!userId) {
+            console.error("No userId found in localStorage");
+            return;
+        }
+
+        const response = await fetch(`${apiUrl}?userId=${userId}`);
         const tweets = await response.json();
         const tweetsContainer = document.getElementById("tweets-container");
         tweetsContainer.innerHTML = ""; // Limpiar el contenedor existente
@@ -36,8 +44,6 @@ async function fetchTweets() {
     }
 }
 
-
-
 // Função para eliminar um tweet
 async function deleteTweet(tweetId) {
     if (tweetId === undefined || tweetId === null) {
@@ -63,7 +69,6 @@ async function deleteTweet(tweetId) {
 
 async function createTweet() {
     const content = document.getElementById("tweetContent").value;
-    const userId = 1; // Fornece un userId fijo para pruebas
 
     try {
         const response = await fetch(apiUrl, {
@@ -101,8 +106,6 @@ async function createTweet() {
     }
 }
 
-
-
 // Função para editar um tweet
 function editTweet(tweetId, currentContent) {
     // Definir o conteúdo atual no modal
@@ -129,7 +132,6 @@ function saveTweet() {
     }
 }
 
-
 // Função para atualizar um tweet
 async function updateTweet(tweetId, newContent) {
     try {
@@ -153,7 +155,6 @@ async function updateTweet(tweetId, newContent) {
         console.error("Erro ao atualizar tweet:", error);
     }
 }
-
 
 // Inicializar a aplicação carregando os tweets ao carregar a página
 document.addEventListener("DOMContentLoaded", () => {

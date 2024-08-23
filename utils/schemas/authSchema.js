@@ -24,4 +24,5 @@ const loginSchema = Joi.object({
 module.exports = {
     userIdSchema,
     createUserSchema,
+    loginSchema
 };

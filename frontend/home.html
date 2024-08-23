@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twittr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Esconder textos em telas pequenas e mostrar apenas ícones */
+        @media (max-width: 767.98px) {
+            .sidebar-text {
+                display: none;
+            }
+        }
+        /* Esconder a barra lateral em dispositivos móveis */
+        @media (max-width: 767.98px) {
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Barra Lateral -->
+            <div class="col-md-3 d-none d-md-block sidebar">
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="fas fa-home"></i> <span class="d-none d-md-inline">Início</span></a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="fas fa-search"></i> <span class="d-none d-md-inline">Explorar</span></a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="./registro.html" class="sidebar-link"><i class="fas fa-user"></i> <span class="d-none d-md-inline">Cadastro</span></a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#" class="sidebar-link"><i class="fas fa-ellipsis-h"></i> <span class="d-none d-md-inline">Mais</span></a>
+                </div>
+                <div class="sidebar-item mt-3 d-flex align-items-center">
+                    <img src="https://picsum.photos/50/50" alt="Foto de Perfil" class="rounded-circle me-2">
+                    <div class="sidebar-text">
+                        <a href="#" class="sidebar-link">@Cristian</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="col-md-6 main-content">
+                <!-- Criar Tweet -->
+                <div class="tweet-card mb-4 p-3 bg-white rounded shadow-sm">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <img src="https://picsum.photos/50/50" alt="Foto de Perfil" class="rounded-circle">
+                        </div>
+                        <div class="flex-grow-1">
+                            <textarea id="tweetContent" class="form-control border-0" rows="3"
+                                placeholder="O que está acontecendo?"></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div>
+                            <i class="far fa-image text-primary me-3" style="cursor:pointer;"></i>
+                            <i class="far fa-smile text-primary" style="cursor:pointer;"></i>
+                        </div>
+                        <button class="btn btn-primary rounded-pill" onclick="createTweet()">Tweetar</button>
+                    </div>
+                </div>
+
+                <!-- Tweets -->
+                <div id="tweets-container">
+                    <!-- Os tweets serão carregados dinamicamente aqui -->
+                </div>
+            </div>
+
+            <!-- Barra Lateral Direita -->
+            <div class="col-md-3 d-none d-md-block right-sidebar">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="card-title">Assine o Premium</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Assine para desbloquear novos recursos e, se elegível, receba uma parte da receita de anúncios.</p>
+                        <button class="btn btn-primary w-100">Assinar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Ao Vivo no X</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <img src="https://picsum.photos/50/50" alt="Foto de Perfil" class="rounded-circle me-2">
+                            <div>
+                                <p class="mb-0"><strong>Marco Bruno</strong> <i class="fas fa-check-circle text-primary"></i></p>
+                                <span class="text-muted">está transmitindo</span>
+                            </div>
+                        </div>
+                        <p class="mt-2">Criando um jogo multiplayer com JavaScript #MyDuckly</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra Lateral Direita Mobile -->
+        <div class="d-md-none">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Assine o Premium</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Assine para desbloquear novos recursos e, se elegível, receba uma parte da receita de anúncios.</p>
+                    <button class="btn btn-primary w-100">Assinar</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Ao Vivo no X</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <img src="https://picsum.photos/50/50" alt="Foto de Perfil" class="rounded-circle me-2">
+                        <div>
+                            <p class="mb-0"><strong>Marco Bruno</strong> <i class="fas fa-check-circle text-primary"></i></p>
+                            <span class="text-muted">está transmitindo</span>
+                        </div>
+                    </div>
+                    <p class="mt-2">Criando um jogo multiplayer com JavaScript #MyDuckly</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de Navegação Inferior -->
+    <nav class="navbar navbar-expand navbar-light bg-light fixed-bottom d-md-none">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="fas fa-home"></i></a>
+            <a class="navbar-brand" href="#"><i class="fas fa-search"></i></a>
+            <a class="navbar-brand" href="#"><i class="fas fa-user"></i></a>
+            <a class="navbar-brand" href="#"><i class="fas fa-ellipsis-h"></i></a>
+        </div>
+    </nav>
+
+    <!-- Modal de Edição -->
+    <div class="modal fade" id="editTweetModal" tabindex="-1" aria-labelledby="editTweetModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTweetModalLabel">Editar Tweet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="editTweetContent" class="form-control" rows="3"
+                        placeholder="Escreva o novo conteúdo do tweet aqui..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveTweet()">Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Seu JavaScript -->
+    <script src="app.js"></script>
+</body>
+
+</html>
