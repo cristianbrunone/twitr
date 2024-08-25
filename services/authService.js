@@ -22,7 +22,8 @@ async function loginUser(loginData) {
     // Generar un token JWT
     const token = jwt.sign({ userId: user.userID }, config.jwtSecret, { expiresIn: '1h' });
 
-    return { token };
+    // Devolver tanto el token como el userId
+    return { userId: user.userID, token };
 }
 
 async function registerUser(userData) {
@@ -41,8 +42,6 @@ async function registerUser(userData) {
     return await authRepository.createUser({ username, email, passwordHash });
 }
 
-
-
 async function getUserById(userId) {
     return await authRepository.getUserById(userId);
 }
@@ -51,9 +50,21 @@ async function updateUser(userId, updateData) {
     return await authRepository.updateUser(userId, updateData);
 }
 
+async function getAllUsers() {
+    return await authRepository.getAllUsers();
+}
+
+async function deleteUser(userId) {
+    return await authRepository.deleteUser(userId);
+}
+
+
+
 module.exports = {
     registerUser,
     getUserById,
     updateUser,
     loginUser,
+    getAllUsers,
+    deleteUser
 };

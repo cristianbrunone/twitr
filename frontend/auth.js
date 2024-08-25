@@ -1,3 +1,5 @@
+// auth.js
+
 // Función para registrar un nuevo usuario
 document.getElementById('registerForm').addEventListener('submit', async function (event) {
     event.preventDefault();
@@ -15,22 +17,21 @@ document.getElementById('registerForm').addEventListener('submit', async functio
             body: JSON.stringify({ username, email, password }),
         });
 
+        if (!response.ok) {
+            const contentType = response.headers.get('Content-Type');
+            let errorText = await response.text();
+            if (contentType && contentType.includes('application/json')) {
+                const errorData = JSON.parse(errorText);
+                errorText = errorData.message || 'An unknown error occurred.';
+            }
+            throw new Error(errorText);
+        }
+
         const data = await response.json();
-        console.log("Register Response Data:", data); // Log de la respuesta
+        console.log("Register Response Data:", data);
 
         const messageDiv = document.getElementById('registerMessage');
-
-        if (response.ok) {
-            messageDiv.innerHTML = `<div class="alert alert-success">Registration successful!</div>`;
-        } else {
-            console.log("Register Error Data:", data); // Log de los datos de error
-
-            const errorMessage = data.message || 'An unknown error occurred.';
-            document.getElementById('errorModalBody').innerText = `Error: ${errorMessage}`;
-
-            const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-            errorModal.show();
-        }
+        messageDiv.innerHTML = `<div class="alert alert-success">Registration successful!</div>`;
     } catch (error) {
         console.error("Error registering user:", error);
 
@@ -41,12 +42,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 });
 
 // Función para iniciar sesión
-document.getElementById('loginForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-
+async function handleLogin(email, password) {
     try {
         const response = await fetch('/api/auth/login', {
             method: 'POST',
@@ -56,30 +52,27 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             body: JSON.stringify({ email, password }),
         });
 
-        const data = await response.json();
-        console.log("Login Response Data:", data); // Log de la respuesta
-
-        const messageDiv = document.getElementById('loginMessage');
-
-        if (response.ok) {
-            messageDiv.innerHTML = `<div class="alert alert-success">Login successful!</div>`;
-
-            // Almacenar el userId en localStorage
-            localStorage.setItem('userId', data.userId);
-            console.log("Stored userId:", localStorage.getItem('userId'));
-            localStorage.setItem('token', data.token);
-
-            // Redirige al usuario a la página de dashboard o a la página principal
-            window.location.href = '/home.html'; // Cambia a la URL deseada
-        } else {
-            console.log("Login Error Data:", data); // Log de los datos de error
-
-            const errorMessage = data.message || 'An unknown error occurred.';
-            document.getElementById('errorModalBody').innerText = `Error: ${errorMessage}`;
-
-            const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-            errorModal.show();
+        if (!response.ok) {
+            const contentType = response.headers.get('Content-Type');
+            let errorText = await response.text();
+            if (contentType && contentType.includes('application/json')) {
+                const errorData = JSON.parse(errorText);
+                errorText = errorData.message || 'An unknown error occurred.';
+            }
+            throw new Error(errorText);
         }
+
+        const data = await response.json();
+        console.log("Login Response Data:", data);
+
+        // Almacenar el userId y token en localStorage
+        localStorage.setItem('userId', data.userId);
+        localStorage.setItem('token', data.token);
+        console.log("Stored userId:", localStorage.getItem('userId'));
+        console.log("Stored token:", localStorage.getItem('token'));
+
+        // Redirige al usuario a la página de dashboard o a la página principal
+        window.location.href = '/home.html';
     } catch (error) {
         console.error("Error logging in:", error);
 
@@ -87,4 +80,16 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
         errorModal.show();
     }
+}
+
+// Asocia la función handleLogin con el formulario de inicio de sesión
+document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    handleLogin(email, password);
 });
+
+

@@ -1,4 +1,5 @@
 const tweetsRepository = require("../repositories/tweetsRepository");
+const { userIdSchema } = require("../utils/schemas/authSchema");
 
 module.exports = {
     getTweets,

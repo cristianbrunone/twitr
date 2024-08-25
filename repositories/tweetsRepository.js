@@ -10,7 +10,11 @@ module.exports = {
 
 async function getTweets() {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM tweets';
+        const query = `
+            SELECT tweets.tweetId, tweets.content, tweets.userId, users.username
+            FROM tweets
+            JOIN users ON tweets.userId = users.userID
+        `;
         connection.query(query, (err, res) => {
             if (err) {
                 reject(err);
@@ -44,7 +48,7 @@ async function getTweet(tweetId) {
                 resolve(res[0]);
             }
         });
-    })
+    });
 }
 
 async function deleteTweet(tweetId) {
@@ -57,19 +61,18 @@ async function deleteTweet(tweetId) {
                 resolve(res.affectedRows);
             }
         });
-    })
+    });
 }
 
 async function updateTweet(tweetId, content) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE tweets SET content = ? WHERE tweetId = ?"
+        const query = "UPDATE tweets SET content = ? WHERE tweetId = ?";
         connection.query(query, [content, tweetId], (err, res) => {
             if (err) {
                 reject(err);
             } else {
                 resolve(res.affectedRows);
             }
-        })
-    })
+        });
+    });
 }
-
