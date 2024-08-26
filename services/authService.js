@@ -19,12 +19,16 @@ async function loginUser(loginData) {
         throw boom.unauthorized('Credenciales inválidas');
     }
 
-    // Generar un token JWT
-    const token = jwt.sign({ userId: user.userID }, config.jwtSecret, { expiresIn: '1h' });
+    // Determina si el usuario es admin
+    const isAdmin = user.email === 'admin@gmail.com';
 
-    // Devolver tanto el token como el userId
-    return { userId: user.userID, token };
+    // Generar un token JWT incluyendo el rol de administrador
+    const token = jwt.sign({ userId: user.userID, isAdmin }, config.jwtSecret, { expiresIn: '1h' });
+
+    // Devolver tanto el token, userId y el rol de admin
+    return { userId: user.userID, token, isAdmin };
 }
+
 
 async function registerUser(userData) {
     const { username, email, password } = userData;

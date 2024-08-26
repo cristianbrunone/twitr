@@ -41,7 +41,6 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     }
 });
 
-// Función para iniciar sesión
 async function handleLogin(email, password) {
     try {
         const response = await fetch('/api/auth/login', {
@@ -63,13 +62,11 @@ async function handleLogin(email, password) {
         }
 
         const data = await response.json();
-        console.log("Login Response Data:", data);
 
-        // Almacenar el userId y token en localStorage
+        // Almacenar el userId, token y rol de admin en localStorage
         localStorage.setItem('userId', data.userId);
         localStorage.setItem('token', data.token);
-        console.log("Stored userId:", localStorage.getItem('userId'));
-        console.log("Stored token:", localStorage.getItem('token'));
+        localStorage.setItem('isAdmin', data.isAdmin); // Almacenar el rol de admin
 
         // Redirige al usuario a la página de dashboard o a la página principal
         window.location.href = '/home.html';
@@ -81,6 +78,7 @@ async function handleLogin(email, password) {
         errorModal.show();
     }
 }
+
 
 // Asocia la función handleLogin con el formulario de inicio de sesión
 document.getElementById('loginForm').addEventListener('submit', function (event) {

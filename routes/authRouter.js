@@ -11,7 +11,7 @@ router.post("/register", validation({ body: createUserSchema }), registerUser);
 router.post("/login", validation({ body: loginSchema }), loginUser);
 router.get("/user/:userId", validation({ params: userIdSchema }), getUserById);
 router.patch("/user/:userId", validation({ params: userIdSchema }), updateUser);
-router.get("/users", getAllUsers); // Ruta para obtener todos los usuarios
+router.get("/users", getAllUsers); 
 router.delete("/user/:userId", validation({ params: userIdSchema }), deleteUser);
 
 

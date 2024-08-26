@@ -1,6 +1,7 @@
 // Configuración para la API de tweets
 const apiUrl = "http://localhost:3000/tweets"; // Ajusta el puerto si es necesario
 
+// Función para obtener los tweets del servidor
 async function fetchTweets() {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
@@ -30,52 +31,58 @@ async function fetchTweets() {
             throw new Error(`Expected JSON but received: ${text}`);
         }
 
-        const tweetsContainer = document.getElementById("tweets-container");
-        tweetsContainer.innerHTML = "";
+        renderTweets(tweets, userId);
 
-        tweets.reverse().forEach(tweet => {
-            const tweetId = tweet.tweetId;
-            const tweetContent = tweet.content;
-            const tweetUserId = tweet.userId;
-            const tweetUserName = tweet.username; // Corregido
-
-            const isOwner = String(tweetUserId) === String(userId);
-
-            const editButton = isOwner
-                ? `<button class="btn btn-primary btn-sm me-2" onclick="editTweet(${tweetId}, '${encodeURIComponent(tweetContent)}')">Editar</button>`
-                : '';
-
-            const deleteButton = isOwner
-                ? `<button class="btn btn-danger btn-sm" onclick="deleteTweet(${tweetId})">Excluir</button>`
-                : '';
-
-            const tweetDiv = document.createElement("div");
-            tweetDiv.className = "tweet tweet-card";
-            tweetDiv.id = `tweet-${tweetId}`;
-            tweetDiv.innerHTML = `
-                <div class="d-flex">
-                    <div class="me-3">
-                        <img src="https://picsum.photos/50/50?random=${tweetUserId}" alt="Foto de Perfil" class="rounded-circle">
-                    </div>
-                    <div class="flex-grow-1">
-                        <p><strong>${tweetUserName}</strong></p>
-                        <p>${tweetContent}</p>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-end">
-                    ${editButton}
-                    ${deleteButton}
-                </div>
-            `;
-
-            tweetsContainer.prepend(tweetDiv);
-
-            // Llamar a updateUsernameLink con el nombre de usuario del tweet
-            updateUsernameLink(tweetUserName);
-        });
     } catch (error) {
         console.error("Error fetching tweets:", error);
     }
+}
+
+// Función para renderizar los tweets en el DOM
+function renderTweets(tweets, userId) {
+    const tweetsContainer = document.getElementById("tweets-container");
+    tweetsContainer.innerHTML = "";
+
+    tweets.reverse().forEach(tweet => {
+        const tweetId = tweet.tweetId;
+        const tweetContent = tweet.content;
+        const tweetUserId = tweet.userId;
+        const tweetUserName = tweet.username;
+
+        const isOwner = String(tweetUserId) === String(userId);
+
+        const editButton = isOwner
+            ? `<button class="btn btn-primary btn-sm me-2" onclick="editTweet(${tweetId}, '${encodeURIComponent(tweetContent)}')">Editar</button>`
+            : '';
+
+        const deleteButton = isOwner
+            ? `<button class="btn btn-danger btn-sm" onclick="deleteTweet(${tweetId})">Excluir</button>`
+            : '';
+
+        const tweetDiv = document.createElement("div");
+        tweetDiv.className = "tweet tweet-card";
+        tweetDiv.id = `tweet-${tweetId}`;
+        tweetDiv.innerHTML = `
+            <div class="d-flex">
+                <div class="me-3">
+                    <img src="https://picsum.photos/50/50?random=${tweetUserId}" alt="Foto de Perfil" class="rounded-circle">
+                </div>
+                <div class="flex-grow-1">
+                    <p><strong>${tweetUserName}</strong></p>
+                    <p>${tweetContent}</p>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                ${editButton}
+                ${deleteButton}
+            </div>
+        `;
+
+        tweetsContainer.prepend(tweetDiv);
+
+        // Llamar a updateUsernameLink con el nombre de usuario del tweet
+        updateUsernameLink(tweetUserName);
+    });
 }
 
 // Función para eliminar un tweet
@@ -145,6 +152,7 @@ function editTweet(tweetId, tweetContent) {
     editTweetModal.show();
 }
 
+// Función para guardar los cambios en un tweet editado
 async function saveTweet() {
     const tweetId = document.getElementById('editTweetModal').dataset.tweetId;
     const content = document.getElementById('editTweetContent').value;
@@ -172,7 +180,7 @@ async function saveTweet() {
 
         fetchTweets(); // Actualizar la lista de tweets
 
-        // Obtener la instancia del modal existente y ocultarla
+        // Ocultar el modal de edición
         const editTweetModal = bootstrap.Modal.getInstance(document.getElementById('editTweetModal'));
         if (editTweetModal) {
             editTweetModal.hide();
@@ -183,32 +191,40 @@ async function saveTweet() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Llama a esta función para configurar la imagen de perfil del usuario al cargar la página
-    setupProfilePicture();
-    // Inicializar la carga de tweets
-    fetchTweets();
-});
-
+// Función para configurar la imagen de perfil del usuario
 function setupProfilePicture() {
     const userId = localStorage.getItem('userId');
     if (userId) {
-        // Reemplaza la URL de la imagen con una URL única basada en el userId
-        const profilePic = document.querySelector('.rounded-circle'); // Suponiendo que el perfil usa esta clase
+        const profilePic = document.querySelector('.rounded-circle');
         if (profilePic) {
             profilePic.src = `https://picsum.photos/50/50?random=${userId}`;
         }
     }
 }
 
+// Función para actualizar el enlace del nombre de usuario
 function updateUsernameLink(username) {
     const usernameLink = document.querySelector('#username-link');
 
     if (usernameLink) {
         usernameLink.href = `user-profile.html?username=${encodeURIComponent(username)}`;
-        usernameLink.textContent = username; // Opcional: actualizar el texto del enlace si es necesario
+        usernameLink.textContent = username;
+    }
+}
+
+function toggleAdminNavItem() {
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    console.log("isAdmin:", isAdmin); // Verifica el valor de isAdmin
+    const adminNavItem = document.getElementById('adminNavItem');
+    if (adminNavItem) {
+        adminNavItem.style.display = isAdmin ? 'block' : 'none';
     }
 }
 
 
-
+// Evento DOMContentLoaded para inicializar las funciones al cargar la página
+document.addEventListener('DOMContentLoaded', function () {
+    setupProfilePicture();
+    toggleAdminNavItem();
+    fetchTweets();
+});
